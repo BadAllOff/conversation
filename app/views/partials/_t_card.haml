@@ -1,0 +1,22 @@
+.panel.panel-default.panel-card
+  .panel-heading
+    %img{:src => asset_path("baloon.jpg")}/
+    %button.btn.visible-lg-block.visible-md-block.btn-primary.btn-xs{:role => "button"} Edit profile
+    %button.btn.visible-sm-block.visible-xs-block.btn-primary{:role => "button"} Edit profile
+  .panel-figure
+    %img.img-responsive.img-circle{:src => asset_path("development/73.jpg")}/
+  .panel-body.text-center
+    %h4.panel-header
+      %a{:href => "https://twitter.com/ShamilBadalov"} @Username
+    %small A short description goes here.
+  .panel-thumbnails
+    .row
+      .col-xs-4
+        .thumbnail
+          %img{:src => asset_path("60x60.jpeg")}/
+      .col-xs-4
+        .thumbnail
+          %img{:src => asset_path("60x60-1.jpeg")}/
+      .col-xs-4
+        .thumbnail
+          %img{:src => asset_path("60x60-2.jpeg")}/
