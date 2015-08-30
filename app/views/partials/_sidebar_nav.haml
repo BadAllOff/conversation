@@ -57,19 +57,19 @@
         %li New New 3
       %li
         %a{:href => "#"}
-          %i.fa.fa-user.fa-lg
-          Profile
-      %li
-        %a{:href => "#"}
           %i.fa.fa-users.fa-lg
           Users
-      %li
-        - if user_signed_in?
+      - if user_signed_in?
+        %li
+          = link_to(edit_user_registration_path) do
+            = fa_icon "user", class: 'fa-lg'
+            Edit profile
+        %li
           = link_to destroy_user_session_path, :method => :delete do
-            = fa_icon "sign-out"
+            = fa_icon "sign-out", class: 'fa-lg'
             Sign out
-        - else
+      - else
+        %li
           = link_to(new_user_session_path) do
-            = fa_icon "sign-in"
+            = fa_icon "sign-in", class: 'fa-lg'
             Sign in
-

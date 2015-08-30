@@ -4,4 +4,5 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   devise :database_authenticatable, :validatable, password_length: 8..128
+  validates :first_name, :last_name, :presence => true
 end
