@@ -1,12 +1,6 @@
 = form_for(@meeting, html: {class: 'form-horizontal'}) do |f|
   - if @meeting.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@meeting.errors.count, "error")
-        prohibited this meeting from being saved:
-      %ul
-        - @meeting.errors.full_messages.each do |message|
-          %li= message
+    = render 'shared/error_messages', target: @meeting
   .field.form-group
     = f.label :title, class: 'control-label col-sm-2'
     .col-sm-6

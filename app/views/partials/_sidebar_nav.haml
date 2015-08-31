@@ -56,9 +56,9 @@
         %li New New 2
         %li New New 3
       %li
-        %a{:href => "#"}
-          %i.fa.fa-users.fa-lg
-          Users
+        = link_to(meetings_path) do
+          = fa_icon "users", class: 'fa-lg'
+          Meetings
       - if user_signed_in?
         %li
           = link_to(edit_user_registration_path) do

@@ -1,0 +1,9 @@
+%h2.text-danger
+  = pluralize(target.errors.count, "error")
+  prohibited this
+  = target.class.name
+  from being saved:
+.alert.alert-danger
+  //%button.close{"data-dismiss" => "alert", :type => "button"} x
+  %ul
+    = target.errors.full_messages.map { |msg| content_tag(:li, msg) }.join.html_safe
