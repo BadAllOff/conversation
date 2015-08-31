@@ -1,4 +1,5 @@
 %h2 Resend unlock instructions
+%hr.colorgraph
 = form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post, class: 'form-horizontal'}) do |f|
   = devise_error_messages!
   .field.form-group

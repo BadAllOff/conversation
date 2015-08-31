@@ -1,4 +1,5 @@
 class Meeting < ActiveRecord::Base
+  belongs_to :user, dependent: :destroy
   validates :title, :topics, :starts_at, :ends_at, :venue, :max_members, presence: true
   validates :title, :topics, length: {minimum: 10}
   validates_datetime :ends_at, after: :starts_at

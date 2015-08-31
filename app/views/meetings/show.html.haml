@@ -52,6 +52,11 @@
             %table.table.table-user-information
               %tbody
                 %tr
+                  %td Initiator:
+                  %td
+                    = @meeting.user.first_name
+                    = @meeting.user.last_name
+                %tr
                   %td Starts at:
                   %td
                     = @meeting.starts_at.to_formatted_s(:short)
@@ -72,8 +77,7 @@
                 %tr
                   %td Members
                   %td
-                    2
-                    \
+                    2\
                     =@meeting.max_members
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}

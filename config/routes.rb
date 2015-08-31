@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :meetings
+  resources :meetings do
+    collection do
+      get 'show_all'
+    end
+  end
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

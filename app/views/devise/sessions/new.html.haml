@@ -1,5 +1,6 @@
 // todo - flash validation message of devise not working normal
 %h2 Log in
+%hr.colorgraph
 = form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal'}) do |f|
   = devise_error_messages!
   .field.form-group

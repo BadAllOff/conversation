@@ -7,6 +7,30 @@
     %ul#menu-content.menu-content.collapse.out
       %li
         = render 'partials/t_card'
+      %li.collapsed.active{"data-target" => "#meetings", "data-toggle" => "collapse"}
+        %a{:href => "#"}
+          = fa_icon "users", class: 'fa-lg'
+          Meetings
+          %span.arrow
+      %ul#meetings.sub-menu.collapse
+        %li.active
+          = link_to 'Active meetings', meetings_path
+        %li
+          = link_to 'All meetings', show_all_meetings_path
+      - if user_signed_in?
+        %li
+          = link_to(edit_user_registration_path) do
+            = fa_icon "user", class: 'fa-lg'
+            Edit profile
+        %li
+          = link_to destroy_user_session_path, :method => :delete do
+            = fa_icon "sign-out", class: 'fa-lg'
+            Sign out
+      - else
+        %li
+          = link_to(new_user_session_path) do
+            = fa_icon "sign-in", class: 'fa-lg'
+            Sign in
       %li
         %a{:href => "#"}
           %i.fa.fa-dashboard.fa-lg
@@ -55,21 +79,3 @@
         %li New New 1
         %li New New 2
         %li New New 3
-      %li
-        = link_to(meetings_path) do
-          = fa_icon "users", class: 'fa-lg'
-          Meetings
-      - if user_signed_in?
-        %li
-          = link_to(edit_user_registration_path) do
-            = fa_icon "user", class: 'fa-lg'
-            Edit profile
-        %li
-          = link_to destroy_user_session_path, :method => :delete do
-            = fa_icon "sign-out", class: 'fa-lg'
-            Sign out
-      - else
-        %li
-          = link_to(new_user_session_path) do
-            = fa_icon "sign-in", class: 'fa-lg'
-            Sign in

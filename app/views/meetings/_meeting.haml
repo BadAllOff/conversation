@@ -12,9 +12,9 @@
       = link_to 'Edit', edit_meeting_path(meeting), class: 'btn btn-warning'
       = link_to 'Destroy', meeting, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
 
-  .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_meeting"}
+  .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_meeting_#{meeting.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
-.row.user-infos{class: "show_meeting"}
+.row.user-infos{class: "show_meeting_#{meeting.id}"}
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-1.col-lg-offset-1
     .panel.panel-primary
       .panel-heading
@@ -27,8 +27,10 @@
             %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
           .col-xs-10.col-sm-10.hidden-md.hidden-lg
             %dl
-              %dt Initiator name, Or organizator name
-              %dd User or userS name
+              %dt Initiator:
+              %dd
+                = meeting.user.first_name
+                = meeting.user.last_name
               %dt Starts:
               %dd
                 = meeting.starts_at.to_formatted_s(:short)
@@ -53,6 +55,11 @@
             %table.table.table-user-information
               %tbody
                 %tr
+                  %td Initiator:
+                  %td
+                    = meeting.user.first_name
+                    = meeting.user.last_name
+                %tr
                   %td Starts at:
                   %td
                     = meeting.starts_at.to_formatted_s(:short)
@@ -73,8 +80,7 @@
                 %tr
                   %td Members
                   %td
-                    2
-                    \
+                    2\
                     =meeting.max_members
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}

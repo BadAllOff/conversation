@@ -1,10 +1,17 @@
 class MeetingsController < ApplicationController
   before_action :set_meeting, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!, except: [:index,:show,:new, :show_all]
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.all
+    # todo change title of the page
+    @meetings = Meeting.all.where("meetings.starts_at > ?", Time.now ).order(:starts_at)
+  end
+
+  def show_all
+    # todo change title of the page
+    @meetings = Meeting.all.order(:starts_at)
+    render 'index'
   end
 
   # GET /meetings/1
@@ -25,6 +32,7 @@ class MeetingsController < ApplicationController
   # POST /meetings.json
   def create
     @meeting = Meeting.new(meeting_params)
+    @meeting.user_id = current_user.id
 
     respond_to do |format|
       if @meeting.save
