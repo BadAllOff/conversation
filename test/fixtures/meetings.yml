@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  topics: MyText
+  starts_at: 2015-08-31 13:37:14
+  ends_at: 2015-08-31 13:37:14
+  venue: MyString
+  max_members: 1
+
+two:
+  title: MyString
+  topics: MyText
+  starts_at: 2015-08-31 13:37:14
+  ends_at: 2015-08-31 13:37:14
+  venue: MyString
+  max_members: 1

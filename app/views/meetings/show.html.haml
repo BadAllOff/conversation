@@ -1,0 +1,22 @@
+%p#notice= notice
+%p
+  %strong Title:
+  = @meeting.title
+%p
+  %strong Topics:
+  = @meeting.topics
+%p
+  %strong Starts at:
+  = @meeting.starts_at
+%p
+  %strong Ends at:
+  = @meeting.ends_at
+%p
+  %strong Venue:
+  = @meeting.venue
+%p
+  %strong Max members:
+  = @meeting.max_members
+= link_to 'Edit', edit_meeting_path(@meeting)
+|
+= link_to 'Back', meetings_path

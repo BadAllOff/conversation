@@ -1,0 +1,36 @@
+= form_for(@meeting, html: {class: 'form-horizontal'}) do |f|
+  - if @meeting.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@meeting.errors.count, "error")
+        prohibited this meeting from being saved:
+      %ul
+        - @meeting.errors.full_messages.each do |message|
+          %li= message
+  .field.form-group
+    = f.label :title, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.text_field :title, class: 'form-control'
+  .field.form-group
+    = f.label :topics, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.text_area :topics, class: 'form-control'
+  .field.form-group
+    = f.label :venue, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.text_field :venue, class: 'form-control'
+  .field.form-group
+    = f.label :max_members, class: 'control-label col-sm-2'
+    .col-sm-2
+      = f.number_field :max_members, class: 'form-control'
+  .field.form-group
+    = f.label :starts_at, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.datetime_select :starts_at, class: 'form-control'
+  .field.form-group
+    = f.label :ends_at, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.datetime_select :ends_at, class: 'form-control'
+  .actions.form-group
+    .col-sm-offset-2.col-sm-6
+      = f.submit class: 'btn btn-primary btn-lg'
