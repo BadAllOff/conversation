@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
-  has_many :meetings
+  has_many :groups
+  has_attached_file :personal_photo, :styles => { :medium => "600x600#", :thumb => "120x120#" },
+                    :default_url => ":style/default_image.png"
+  validates_with AttachmentContentTypeValidator, attributes: :personal_photo, :content_type => /\Aimage\/.*\Z/
+  # validates_attachment_content_type :personal_photo, :content_type => /\Aimage\/.*\Z/
+  validates_with AttachmentSizeValidator, attributes: :personal_photo, less_than: 2.megabytes
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

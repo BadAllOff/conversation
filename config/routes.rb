@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :meetings do
+  resources :groups do
     collection do
       get 'show_all'
     end

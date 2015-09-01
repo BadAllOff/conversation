@@ -4,11 +4,15 @@
     //%button.btn.visible-lg-block.visible-md-block.btn-primary.btn-xs{:role => "button"} Edit profile
     //%button.btn.visible-sm-block.visible-xs-block.btn-primary{:role => "button"} Edit profile
   .panel-figure
-    %img.img-responsive.img-circle{:src => asset_path("development/73.jpg")}/
+    = image_tag current_user.personal_photo.url(:thumb), class: 'img-responsive img-circle'
   .panel-body.text-center
     %h4.panel-header
       %a{:href => "https://twitter.com/ShamilBadalov"} @Username
-    %small A short description goes here.
+    %small
+      Hello
+      = current_user.first_name
+      = current_user.last_name + '!'
+      See your badges below!
   .panel-thumbnails
     .row
       .col-xs-4

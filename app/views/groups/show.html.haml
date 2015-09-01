@@ -1,0 +1,98 @@
+= link_to 'Back', groups_path
+|
+= link_to 'Edit', edit_group_path(@group)
+
+.row.user-row
+  .col-xs-3.col-sm-2.col-md-1.col-lg-1
+    - user_pic = [74, 75, 76].sample
+    %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
+  .col-xs-8.col-sm-9.col-md-10.col-lg-10
+    %strong Username
+    %p
+      = @group.title
+    %span.text-muted User level: Intermediate
+  .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group"}
+    %i.glyphicon.glyphicon-chevron-down.text-muted
+.row.user-infos{class: "show_group"}
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-1.col-lg-offset-1
+    .panel.panel-primary
+      .panel-heading
+        %h3.panel-title Information about group
+      .panel-body
+        .row
+          .col-md-3.col-lg-3.hidden-xs.hidden-sm
+            %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
+          .col-xs-2.col-sm-2.hidden-md.hidden-lg
+            %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
+          .col-xs-10.col-sm-10.hidden-md.hidden-lg
+            %dl
+              %dt Initiator name, Or organizator name
+              %dd User or userS name
+              %dt Starts:
+              %dd
+                = @group.starts_at.to_formatted_s(:short)
+              %dt Ends:
+              %dd
+                = @group.ends_at.to_formatted_s(:short)
+              %dt Topics:
+              %dd
+                = @group.topics
+              %dt Meeting point:
+              %dd
+                = @group.venue
+                = link_to '#' do
+                  = fa_icon 'map-marker', class: 'fa-lg'
+              %dt Members:
+              %dd
+                2\
+                =@group.max_members
+          .col-md-9.col-lg-9.hidden-xs.hidden-sm
+            %strong Cyruxx
+            %br/
+            %table.table.table-user-information
+              %tbody
+                %tr
+                  %td Initiator:
+                  %td
+                    = @group.user.first_name
+                    = @group.user.last_name
+                %tr
+                  %td Starts at:
+                  %td
+                    = @group.starts_at.to_formatted_s(:short)
+                %tr
+                  %td Ends at:
+                  %td
+                    = @group.ends_at.to_formatted_s(:short)
+                %tr
+                  %td Topics:
+                  %td
+                    = @group.topics
+                %tr
+                  %td Meeting point:
+                  %td
+                    = @group.venue
+                    = link_to '#' do
+                      = fa_icon 'map-marker', class: 'fa-lg'
+                %tr
+                  %td Members
+                  %td
+                    2\
+                    =@group.max_members
+      .panel-footer
+        %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
+          = fa_icon "envelope-o"
+        %button.btn.btn-sm.btn-default{"data-original-title" => "Cheers up!", "data-toggle" => "tooltip", :type => "button"}
+          = fa_icon "thumbs-o-up"
+        %span.pull-right
+          %button.btn.btn-success{"data-original-title" => "Ask invitation", "data-toggle" => "tooltip", :type => "button"}
+            = fa_icon 'plus'
+            = fa_icon 'group'
+            .span.hidden-xs
+              Ask invitation
+          %button.btn.btn-danger{"data-original-title" => "Leave group", "data-toggle" => "tooltip", :type => "button"}
+            = fa_icon 'minus'
+            = fa_icon 'group'
+            .span.hidden-xs
+              Leave group
+        .clearfix

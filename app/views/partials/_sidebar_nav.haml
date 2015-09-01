@@ -1,22 +1,23 @@
 .nav-side-menu
   .brand
     %span.visible-xs-block
-      Hello %username%!
+      Hello
+      = current_user.first_name if user_signed_in?
   %i.fa.fa-bars.fa-2x.toggle-btn{"data-target" => "#menu-content", "data-toggle" => "collapse"}
   .menu-list
     %ul#menu-content.menu-content.collapse.out
       %li
-        = render 'partials/t_card'
-      %li.collapsed.active{"data-target" => "#meetings", "data-toggle" => "collapse"}
+        = render 'partials/t_card' if user_signed_in?
+      %li.collapsed.active{"data-target" => "#groups", "data-toggle" => "collapse"}
         %a{:href => "#"}
           = fa_icon "users", class: 'fa-lg'
-          Meetings
+          Groups
           %span.arrow
-      %ul#meetings.sub-menu.collapse
+      %ul#groups.sub-menu.collapse
         %li.active
-          = link_to 'Active meetings', meetings_path
+          = link_to 'Active groups', groups_path
         %li
-          = link_to 'All meetings', show_all_meetings_path
+          = link_to 'All groups', show_all_groups_path
       - if user_signed_in?
         %li
           = link_to(edit_user_registration_path) do
@@ -31,51 +32,3 @@
           = link_to(new_user_session_path) do
             = fa_icon "sign-in", class: 'fa-lg'
             Sign in
-      %li
-        %a{:href => "#"}
-          %i.fa.fa-dashboard.fa-lg
-          Dashboard
-      %li.collapsed.active{"data-target" => "#products", "data-toggle" => "collapse"}
-        %a{:href => "#"}
-          %i.fa.fa-gift.fa-lg
-          UI Elements
-          %span.arrow
-      %ul#products.sub-menu.collapse
-        %li.active
-          %a{:href => "#"} CSS3 Animation
-        %li
-          %a{:href => "#"} General
-        %li
-          %a{:href => "#"} Buttons
-        %li
-          %a{:href => "#"} Tabs  Accordions
-        %li
-          %a{:href => "#"} Typography
-        %li
-          %a{:href => "#"} FontAwesome
-        %li
-          %a{:href => "#"} Slider
-        %li
-          %a{:href => "#"} Panels
-        %li
-          %a{:href => "#"} Widgets
-        %li
-          %a{:href => "#"} Bootstrap Model
-      %li.collapsed{"data-target" => "#service", "data-toggle" => "collapse"}
-        %a{:href => "#"}
-          %i.fa.fa-globe.fa-lg
-          Services
-          %span.arrow
-      %ul#service.sub-menu.collapse
-        %li New Service 1
-        %li New Service 2
-        %li New Service 3
-      %li.collapsed{"data-target" => "#new", "data-toggle" => "collapse"}
-        %a{:href => "#"}
-          %i.fa.fa-car.fa-lg
-          New
-          %span.arrow
-      %ul#new.sub-menu.collapse
-        %li New New 1
-        %li New New 2
-        %li New New 3

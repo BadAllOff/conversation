@@ -3,6 +3,13 @@
 %hr.colorgraph
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'form-horizontal'}) do |f|
   = devise_error_messages!
+  -#= image_tag resource.personal_photo.url, class: 'img-responsive'
+  -#= image_tag resource.personal_photo.url(:medium), class: 'img-responsive'
+  = image_tag resource.personal_photo.url(:thumb), class: 'img-responsive img-circle'
+  .field.form-group
+    = f.label :personal_photo, class: 'control-label col-sm-2'
+    .col-sm-6
+      = f.file_field :personal_photo
   .field.form-group
     = f.label :first_name, class: 'control-label col-sm-2'
     .col-sm-6
