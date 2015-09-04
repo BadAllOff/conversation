@@ -4,11 +4,28 @@
     %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
   .col-xs-8.col-sm-9.col-md-10.col-lg-10
     %strong
-      -#= group.user.first_name
-      -#= group.user.last_name
+      = group.user.first_name
+      = group.user.last_name
     %p
-      = group.title
-    %span.text-muted User level: Intermediate
+      = group.group_name
+    %span.text-muted
+      User level: Intermediate
+      |
+    %p
+      %span.text-muted
+        - case group.privacy
+          - when 'public'
+            %span.label.label-info
+              = fa_icon 'globe'
+              Public
+          - when 'private'
+            %span.label.label-success
+              = fa_icon 'group'
+              Private
+          - when 'closed'
+            %span.label.label-default
+              = fa_icon 'lock'
+              Closed
     .btn-group.pull-right{role: 'group'}
       = link_to 'Show', group, class: 'btn btn-default'
       = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning'
@@ -31,8 +48,8 @@
             %dl
               %dt Initiator:
               %dd
-                -#= group.user.first_name
-              -#= group.user.last_name
+                = group.user.first_name
+                = group.user.last_name
               %dt Starts:
               %dd
                 = group.starts_at.to_formatted_s(:short)
@@ -59,8 +76,8 @@
                 %tr
                   %td Initiator:
                   %td
-                    -#= group.user.first_name
-                    -#= group.user.last_name
+                    = group.user.first_name
+                    = group.user.last_name
                 %tr
                   %td Starts at:
                   %td
@@ -95,7 +112,7 @@
             = fa_icon 'group'
             .span.hidden-xs
               Ask invitation
-          %button.btn.btn-danger{"data-original-title" => "Leave group", "data-toggle" => "tooltip", :type => "button"}
+          %button.btn.btn-danger{"data-original-group_name" => "Leave group", "data-toggle" => "tooltip", :type => "button"}
             = fa_icon 'minus'
             = fa_icon 'group'
             .span.hidden-xs
