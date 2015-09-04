@@ -99,19 +99,35 @@
                 %tr
                   %td Members
                   %td
-                    2\
+                    = group.members_counter
+                    of the
                     =group.max_members
+                    available
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"
         %button.btn.btn-sm.btn-default{"data-original-title" => "Cheers up!", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "thumbs-o-up"
         %span.pull-right
-          %button.btn.btn-success{"data-original-title" => "Ask invitation", "data-toggle" => "tooltip", :type => "button"}
-            = fa_icon 'plus'
-            = fa_icon 'group'
-            .span.hidden-xs
-              Ask invitation
+          - case group.privacy
+            - when 'public'
+              = link_to join_group_path(group), class: 'btn btn-info' do
+                = fa_icon 'plus'
+                = fa_icon 'globe'
+                .span.hidden-xs
+                  Join group
+            - when 'private'
+              = link_to join_group_path(group), class: 'btn btn-success' do
+                = fa_icon 'plus'
+                = fa_icon 'group'
+                .span.hidden-xs
+                  Ask invitation
+            - when 'closed'
+              = link_to join_group_path(group), class: 'btn btn-warning' do
+                = fa_icon 'plus'
+                = fa_icon 'unlock'
+                .span.hidden-xs
+                  Ask invitation
           %button.btn.btn-danger{"data-original-group_name" => "Leave group", "data-toggle" => "tooltip", :type => "button"}
             = fa_icon 'minus'
             = fa_icon 'group'

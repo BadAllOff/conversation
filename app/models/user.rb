@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :groups
+  has_many :group_memberships, dependent: :destroy
   has_attached_file :personal_photo, :styles => { :medium => "600x600#", :thumb => "120x120#" },
                     :default_url => ":style/default_image.png"
   validates_with AttachmentContentTypeValidator, attributes: :personal_photo, :content_type => /\Aimage\/.*\Z/

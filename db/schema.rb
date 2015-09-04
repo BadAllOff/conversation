@@ -11,22 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904084538) do
+ActiveRecord::Schema.define(version: 20150904220535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "group_memberships", force: :cascade do |t|
+    t.integer  "group_id"
+    t.integer  "user_id"
+    t.string   "status",         default: "pending"
+    t.datetime "admission_time"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "group_memberships", ["group_id", "user_id"], name: "index_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
+  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
+  add_index "group_memberships", ["user_id"], name: "index_group_memberships_on_user_id", using: :btree
+
   create_table "groups", force: :cascade do |t|
-    t.string   "group_name",  default: "",       null: false
-    t.text     "topics",      default: "",       null: false
+    t.string   "group_name",      default: "",       null: false
+    t.text     "topics",          default: "",       null: false
     t.datetime "starts_at"
     t.datetime "ends_at"
-    t.string   "venue",       default: "",       null: false
-    t.integer  "max_members", default: 1,        null: false
+    t.string   "venue",           default: "",       null: false
+    t.integer  "max_members",     default: 1,        null: false
     t.integer  "user_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "privacy",     default: "public"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "privacy",         default: "public"
+    t.integer  "members_counter", default: 1
   end
 
   create_table "users", force: :cascade do |t|
