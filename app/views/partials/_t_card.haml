@@ -10,9 +10,7 @@
       %a{:href => "https://twitter.com/ShamilBadalov"} @Username
     %small
       Hello
-      = current_user.first_name
-      = current_user.last_name + '!'
-      See your badges below!
+      = current_user.first_name + ' ' + current_user.last_name + '!'
   .panel-thumbnails
     .row
       .col-xs-4
