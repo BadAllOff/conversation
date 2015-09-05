@@ -8,9 +8,14 @@
       = group.user.last_name
     %p
       = group.group_name
-    %span.text-muted
+    %p.text-muted
       User level: Intermediate
-      |
+    %p.text-muted
+      Members:
+      - us = User.find(group.members.ids)
+      - us.each do |user|
+        = user.first_name
+        = user.last_name << ','
     %p
       %span.text-muted
         - case group.privacy
@@ -69,8 +74,6 @@
                 2\
                 =group.max_members
           .col-md-9.col-lg-9.hidden-xs.hidden-sm
-            %strong Cyruxx
-            %br/
             %table.table.table-user-information
               %tbody
                 %tr
@@ -128,7 +131,7 @@
                 = fa_icon 'unlock'
                 .span.hidden-xs
                   Ask invitation
-          %button.btn.btn-danger{"data-original-group_name" => "Leave group", "data-toggle" => "tooltip", :type => "button"}
+          = link_to leave_group_path(group), class: 'btn btn-danger', data: {confirm: 'Are you shure you wanna leave the group?'} do
             = fa_icon 'minus'
             = fa_icon 'group'
             .span.hidden-xs

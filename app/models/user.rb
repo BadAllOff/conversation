@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  belongs_to :group
   has_many :groups
   has_many :group_memberships, dependent: :destroy
   has_attached_file :personal_photo, :styles => { :medium => "600x600#", :thumb => "120x120#" },

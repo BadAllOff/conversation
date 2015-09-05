@@ -26,8 +26,6 @@ ActiveRecord::Schema.define(version: 20150904220535) do
   end
 
   add_index "group_memberships", ["group_id", "user_id"], name: "index_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
-  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
-  add_index "group_memberships", ["user_id"], name: "index_group_memberships_on_user_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.string   "group_name",      default: "",       null: false
