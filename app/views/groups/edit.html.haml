@@ -1,5 +1,9 @@
 %h1 Editing Group
 = render 'form'
-= link_to 'Show', @group
-|
-= link_to 'Back', groups_path
+%hr.colorgraph
+%ul.nav.nav-pills
+  %li
+    = link_to 'Back', groups_path
+  %li
+    = link_to 'Show', @group
+

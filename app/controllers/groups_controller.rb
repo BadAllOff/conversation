@@ -14,6 +14,11 @@ class GroupsController < ApplicationController
     render 'index'
   end
 
+  def my
+    @groups = Group.all.where("groups.user_id = ?", current_user.id ).order(:created_at)
+    render 'my_groups'
+  end
+
   # GET /groups/1
   # GET /groups/1.json
   def show

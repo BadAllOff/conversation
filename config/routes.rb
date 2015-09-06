@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :groups do
     collection do
       get 'show_all'
+      get 'my'
     end
   end
   devise_for :users

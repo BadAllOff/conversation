@@ -1,22 +1,14 @@
 .row.user-row
-  .col-xs-3.col-sm-2.col-md-1.col-lg-1
+  .col-xs-3.col-sm-2.col-md-2.col-lg-1
     - user_pic = [74, 75, 76].sample
-    %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
-  .col-xs-8.col-sm-9.col-md-10.col-lg-10
+    %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}
+  .col-xs-8.col-sm-9.col-md-9.col-lg-10
     %strong
       = group.user.first_name
       = group.user.last_name
     %p
       = group.group_name
     %p.text-muted
-      User level: Intermediate
-    %p.text-muted
-      Members:
-      - us = User.find(group.members.ids)
-      - us.each do |user|
-        = user.first_name
-        = user.last_name << ','
-    %p
       %span.text-muted
         - case group.privacy
           - when 'public'
@@ -31,10 +23,12 @@
             %span.label.label-default
               = fa_icon 'lock'
               Closed
-    .btn-group.pull-right{role: 'group'}
-      = link_to 'Show', group, class: 'btn btn-default'
-      = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning'
-      = link_to 'Destroy', group, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
+        User level: Intermediate
+    - if user_signed_in? && current_user.id == group.user_id
+      .btn-group.pull-right{role: 'group'}
+        = link_to 'Show', group, class: 'btn btn-default'
+        = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning'
+        = link_to 'Destroy', group, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
 
   .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group_#{group.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
@@ -45,11 +39,7 @@
         %h3.panel-title Information about group
       .panel-body
         .row
-          .col-md-3.col-lg-3.hidden-xs.hidden-sm
-            %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
-          .col-xs-2.col-sm-2.hidden-md.hidden-lg
-            %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}/
-          .col-xs-10.col-sm-10.hidden-md.hidden-lg
+          .col-xs-12.col-sm-12.hidden-md.hidden-lg
             %dl
               %dt Initiator:
               %dd
@@ -73,39 +63,56 @@
               %dd
                 2\
                 =group.max_members
-          .col-md-9.col-lg-9.hidden-xs.hidden-sm
+                %p
+                  = render partial: 'groups/members', locals: {group: group}
+          .col-md-12.col-lg-12.hidden-xs.hidden-sm
             %table.table.table-user-information
               %tbody
                 %tr
-                  %td Initiator:
+                  %td
+                    %strong
+                      Initiator:
                   %td
                     = group.user.first_name
                     = group.user.last_name
                 %tr
-                  %td Starts at:
+                  %td
+                    %strong
+                      Starts at:
                   %td
                     = group.starts_at.to_formatted_s(:short)
                 %tr
-                  %td Ends at:
+                  %td
+                    %strong
+                      Ends at:
                   %td
                     = group.ends_at.to_formatted_s(:short)
                 %tr
-                  %td Topics:
+                  %td
+                    %strong
+                      Topics:
                   %td
                     = group.topics
                 %tr
-                  %td Meeting point:
+                  %td
+                    %strong
+                      Meeting point:
                   %td
                     = group.venue
                     = link_to '#' do
                       = fa_icon 'map-marker', class: 'fa-lg'
                 %tr
-                  %td Members
+                  %td
+                    %strong
+                      Members
                   %td
                     = group.members_counter
                     of the
                     =group.max_members
                     available
+                %tr
+                  %td
+                    = render partial: 'groups/members', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"
