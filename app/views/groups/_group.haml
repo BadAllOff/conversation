@@ -1,8 +1,7 @@
 .row.user-row
-  .col-xs-3.col-sm-2.col-md-2.col-lg-1
-    - user_pic = [74, 75, 76].sample
-    %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path("development/#{user_pic}.jpg")}
-  .col-xs-8.col-sm-9.col-md-9.col-lg-10
+  .col-xs-3.col-sm-2.col-md-2.col-lg-2
+    %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(group.user.personal_photo.url(:thumb))}
+  .col-xs-8.col-sm-9.col-md-9.col-lg-9
     %strong
       = group.user.first_name
       = group.user.last_name
@@ -15,14 +14,14 @@
             %span.label.label-info
               = fa_icon 'globe'
               Public
-          - when 'private'
+          - when 'closed'
             %span.label.label-success
               = fa_icon 'group'
-              Private
-          - when 'closed'
+              Closed
+          - when 'private'
             %span.label.label-default
               = fa_icon 'lock'
-              Closed
+              Private
         User level: Intermediate
     - if user_signed_in? && current_user.id == group.user_id
       .btn-group.pull-right{role: 'group'}
@@ -33,7 +32,7 @@
   .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group_#{group.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
 .row.user-infos{class: "show_group_#{group.id}"}
-  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-1.col-lg-offset-1
+  .col-xs-12.col-sm-12.col-md-9.col-lg-9.col-xs-offset-0.col-sm-offset-0.col-md-offset-2.col-lg-offset-2
     .panel.panel-primary
       .panel-heading
         %h3.panel-title Information about group
@@ -45,6 +44,7 @@
               %dd
                 = group.user.first_name
                 = group.user.last_name
+                = group.user_id
               %dt Starts:
               %dd
                 = group.starts_at.to_formatted_s(:short)
@@ -61,58 +61,86 @@
                   = fa_icon 'map-marker', class: 'fa-lg'
               %dt Members:
               %dd
-                2\
+                = group.members_counter
+                of the
                 =group.max_members
-                %p
-                  = render partial: 'groups/members', locals: {group: group}
+                available
+              %dt
+                Joined:
+              %dd
+                %hr.colorgraph
+                - if user_signed_in? && current_user.id == group.user_id
+                  = render partial: 'groups/owner_members_managment', locals: {group: group}
+                - else
+                  - case group.privacy
+                    - when 'public', 'closed'
+                      = render partial: 'groups/members_managment', locals: {group: group}
+                    - else
+                      = render partial: 'groups/members_list', locals: {group: group}
           .col-md-12.col-lg-12.hidden-xs.hidden-sm
             %table.table.table-user-information
               %tbody
                 %tr
-                  %td
+                  %td.col-md-3.col-lg-2.text-right
                     %strong
                       Initiator:
-                  %td
+                  %td.text-left
                     = group.user.first_name
                     = group.user.last_name
                 %tr
-                  %td
+                  %td.text-right
                     %strong
                       Starts at:
-                  %td
+                  %td.text-left
                     = group.starts_at.to_formatted_s(:short)
                 %tr
-                  %td
+                  %td.text-right
                     %strong
                       Ends at:
-                  %td
+                  %td.text-left
                     = group.ends_at.to_formatted_s(:short)
                 %tr
-                  %td
+                  %td.text-right
                     %strong
                       Topics:
-                  %td
+                  %td.text-left
                     = group.topics
                 %tr
-                  %td
+                  %td.text-right
                     %strong
                       Meeting point:
-                  %td
+                  %td.text-left
                     = group.venue
                     = link_to '#' do
                       = fa_icon 'map-marker', class: 'fa-lg'
                 %tr
-                  %td
+                  %td.text-right
                     %strong
                       Members
-                  %td
+                  %td.text-left
                     = group.members_counter
                     of the
                     =group.max_members
                     available
-                %tr
-                  %td
-                    = render partial: 'groups/members', locals: {group: group}
+            %p
+              %strong
+                Joined:
+              %hr.colorgraph
+              - if user_signed_in? && current_user.id == group.user_id
+                = render partial: 'groups/owner_members_managment', locals: {group: group}
+              - elsif user_signed_in?
+                - case group.privacy
+                  - when 'public', 'closed'
+                    -#= group.members.any?{}.status
+                    - if group.members.any?{|m| m.user_id == current_user.id && m.status == 'joined'}
+                      JOINED STATUS
+                      = render partial: 'groups/members_managment', locals: {group: group}
+                    - else
+                      PENDING STATUS
+                      = render partial: 'groups/members_list', locals: {group: group}
+              - else
+                NOT IN LIST STATUS
+                = render partial: 'groups/members_list', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"
@@ -126,13 +154,13 @@
                 = fa_icon 'globe'
                 .span.hidden-xs
                   Join group
-            - when 'private'
+            - when 'closed'
               = link_to join_group_path(group), class: 'btn btn-success' do
                 = fa_icon 'plus'
                 = fa_icon 'group'
                 .span.hidden-xs
                   Ask invitation
-            - when 'closed'
+            - when 'private'
               = link_to join_group_path(group), class: 'btn btn-warning' do
                 = fa_icon 'plus'
                 = fa_icon 'unlock'
