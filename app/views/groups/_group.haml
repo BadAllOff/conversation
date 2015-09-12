@@ -128,19 +128,12 @@
               %hr.colorgraph
               - if user_signed_in? && current_user.id == group.user_id
                 = render partial: 'groups/owner_members_managment', locals: {group: group}
-              - elsif user_signed_in?
+              - else
                 - case group.privacy
                   - when 'public', 'closed'
-                    -#= group.members.any?{}.status
-                    - if group.members.any?{|m| m.user_id == current_user.id && m.status == 'joined'}
-                      JOINED STATUS
-                      = render partial: 'groups/members_managment', locals: {group: group}
-                    - else
-                      PENDING STATUS
-                      = render partial: 'groups/members_list', locals: {group: group}
-              - else
-                NOT IN LIST STATUS
-                = render partial: 'groups/members_list', locals: {group: group}
+                    = render partial: 'groups/members_managment', locals: {group: group}
+                  - else
+                    = render partial: 'groups/members_list', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"

@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  belongs_to :user, dependent: :destroy
+  belongs_to :user
   has_many :members,  class_name: 'GroupMembership', dependent: :destroy
   has_many :users, through: :group_memberships, foreign_key: 'user_id'
   validates :group_name, :topics, :starts_at, :ends_at, :venue, :max_members, :privacy, presence: true

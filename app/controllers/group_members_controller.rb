@@ -50,34 +50,39 @@ class GroupMembersController < ApplicationController
   end
 
   def accept_member
-
     if @group.user_id == current_user.id
-      # формируем масив данных для записи в базу
-      @membership.group_id        = params[:group_id]
-      @membership.user_id         = params[:user_id]
-      @membership.accepted_by     = current_user.id
-      @membership.status          = 'joined'
-      @membership.admission_time  = Time.now
-      # Сообщение о принятии
-      member_accepted = 'User accepted.'
-      if member.present?
-        groupm = GroupMembership.where(["group_id = ? AND user_id = ?", @membership.group_id.to_i, @membership.user_id.to_i]).first
-        groupm.status          = 'joined'
-        groupm.admission_time  = Time.now
-        groupm.save
+      @membership_request = get_membership_request(params[:group_id], params[:user_id])
+      if @membership_request.present?
+        @membership_request.first.update(
+                                    status:          'joined',
+                                    admission_time:  Time.now,
+                                    accepted_by: current_user.id
+        )
         @group.members_counter +=1
         @group.save
         respond_to do |format|
-          format.html { redirect_to group_path(@group), notice: member_accepted }
-          end
-      else
-
+          format.html { redirect_to group_path(@group), notice: 'User accepted.' }
+        end
+      end
+    elsif member?(params[:group_id], current_user.id) && @group.privacy == 'closed'
+      @membership_request = get_membership_request(params[:group_id], params[:user_id])
+      if @membership_request.present?
+        @membership_request.first.update(
+            status:          'joined',
+            admission_time:  Time.now,
+            accepted_by: current_user.id
+        )
+        @group.members_counter +=1
+        @group.save
+        respond_to do |format|
+          format.html { redirect_to group_path(@group), notice: 'User accepted.' }
+        end
       end
     else
-
+      respond_to do |format|
+        format.html { redirect_to group_path(@group), alert: 'Action prohibited.' }
+      end
     end
-
-
   end
 
   def leave
@@ -122,12 +127,20 @@ class GroupMembersController < ApplicationController
     @membership = GroupMembership.new()
   end
 
+  def get_membership_request(group_id, user_id)
+    GroupMembership.where(["group_id = ? AND user_id = ?", group_id.to_i, user_id.to_i]).first(1)
+  end
+
   def member
     GroupMembership.where(["group_id = ? AND user_id = ?", @membership.group_id.to_i, @membership.user_id.to_i]).first(1)
   end
 
   def get_member
     GroupMembership.where(["group_id = ? AND user_id = ? AND status = 'joined'", @membership.group_id.to_i, @membership.user_id.to_i])
+  end
+
+  def member?(group_id, user_id)
+    GroupMembership.where(["group_id = ? AND user_id = ? AND status = 'joined'", group_id.to_i, user_id.to_i]).first(1)
   end
 
 end

@@ -8,10 +8,8 @@
           .media-heading
             = member.user.first_name
             - if member.status == 'pending'
-              %div.visible-xs-inline.visible-sm-inline.pull-right
-                = link_to '#', class: 'btn btn-success btn-lg' do
+              %div.pull-right
+                = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-lg btn-success' do
                   = fa_icon 'plus'
-              %div.visible-md-inline.visible-lg-inline.pull-right.btn-group{role: 'group'}
-                = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-success' do
-                  = fa_icon 'plus'
-                  Accept
+                  %span.visible-md-inline.visible-lg-inline
+                    Accept
