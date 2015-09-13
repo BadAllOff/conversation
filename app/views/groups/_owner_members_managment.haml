@@ -11,15 +11,12 @@
           .media-heading
             = member.user.first_name
             = member.user.last_name
-            %div.visible-xs-inline.visible-sm-inline.pull-right
+            %div.pull-right
               = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-success btn-lg' do
                 = fa_icon 'plus'
-              = link_to '#', class: 'btn btn-danger btn-lg' do
+                %span.visible-md-inline.visible-lg-inline
+                  Accept
+              = link_to decline_member_from_group_path(group.id, member.user_id), class: 'btn btn-danger btn-lg' do
                 = fa_icon 'ban'
-            %div.visible-md-inline.visible-lg-inline.pull-right.btn-group{role: 'group'}
-              = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-success' do
-                = fa_icon 'plus'
-                Accept
-              = link_to '#', class: 'btn btn-danger' do
-                = fa_icon 'ban'
-                Decline
+                %span.visible-md-inline.visible-lg-inline
+                  Decline

@@ -29,7 +29,7 @@
       .radio
         %label
           = f.radio_button :privacy, 'closed'
-          = fa_icon 'group'
+          = fa_icon 'lock'
           Closed group
           %small.help-block Anyone can ask an invitation to the group.
           %small.help-block Anyone in the group can accept new members.
@@ -37,7 +37,7 @@
       .radio
         %label
           = f.radio_button :privacy, 'private'
-          = fa_icon 'lock'
+          = fa_icon 'user'
           Private group
           %small.help-block Anyone can ask an invitation to the group.
           %small.help-block Anyone in the group can send invitations.

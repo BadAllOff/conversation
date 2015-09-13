@@ -20,7 +20,7 @@
               Closed
           - when 'private'
             %span.label.label-default
-              = fa_icon 'lock'
+              = fa_icon 'user'
               Private
         User level: Intermediate
     - if user_signed_in? && current_user.id == group.user_id
@@ -143,25 +143,21 @@
           - case group.privacy
             - when 'public'
               = link_to join_group_path(group), class: 'btn btn-info' do
-                = fa_icon 'plus'
-                = fa_icon 'globe'
+                = fa_icon 'user-plus 2x'
                 .span.hidden-xs
                   Join group
             - when 'closed'
               = link_to join_group_path(group), class: 'btn btn-success' do
-                = fa_icon 'plus'
-                = fa_icon 'group'
+                = fa_icon 'user-plus 2x'
                 .span.hidden-xs
                   Ask invitation
             - when 'private'
               = link_to join_group_path(group), class: 'btn btn-warning' do
-                = fa_icon 'plus'
-                = fa_icon 'unlock'
+                = fa_icon 'user-plus 2x'
                 .span.hidden-xs
                   Ask invitation
           = link_to leave_group_path(group), class: 'btn btn-danger', data: {confirm: 'Are you shure you wanna leave the group?'} do
-            = fa_icon 'minus'
-            = fa_icon 'group'
+            = fa_icon 'user-times 2x'
             .span.hidden-xs
               Leave group
         .clearfix

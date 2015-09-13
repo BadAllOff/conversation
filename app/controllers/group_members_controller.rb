@@ -1,4 +1,8 @@
 #TODO - refactor this sh*t
+#TODO - refactor AR
+#TODO - refactor counter
+#TODO - refactor params
+#TODO - refactor methods to crud maybe
 class GroupMembersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_group
@@ -28,9 +32,11 @@ class GroupMembersController < ApplicationController
     @membership.accepted_by     = current_user.id
     @membership.admission_time  = Time.now
 
-    @member = member
+    @member = is_request?(params[:group_id], current_user.id)
+
     if @member.present?
       respond_to do |format|
+
         if @member.first.status == 'joined'
           format.html { redirect_to group_path(@group), notice: msg_if_member_joined }
         else
@@ -38,10 +44,15 @@ class GroupMembersController < ApplicationController
         end
       end
     else
-      @membership.save
-      if @group.privacy == 'public'
-        @group.members_counter +=1
-        @group.save
+      if current_user.id == @group.user_id
+        msg_if_member_not_exists = 'You are initiator. You are already in this group.'
+      else
+        @membership.save
+
+        if @group.privacy == 'public'
+          @group.members_counter +=1
+          @group.save
+        end
       end
       respond_to do |format|
         format.html { redirect_to group_path(@group), notice: msg_if_member_not_exists}
@@ -51,22 +62,31 @@ class GroupMembersController < ApplicationController
 
   def accept_member
     if @group.user_id == current_user.id
-      @membership_request = get_membership_request(params[:group_id], params[:user_id])
+      @membership_request = is_request?(params[:group_id], params[:user_id])
+
       if @membership_request.present?
-        @membership_request.first.update(
-                                    status:          'joined',
-                                    admission_time:  Time.now,
-                                    accepted_by: current_user.id
-        )
-        @group.members_counter +=1
-        @group.save
+
+        if @membership_request.first.status == 'pending'
+          @membership_request.first.update(
+                                      status:          'joined',
+                                      admission_time:  Time.now,
+                                      accepted_by: current_user.id
+          )
+          @group.members_counter +=1
+          @group.save
+          notice = 'User accepted.'
+        else
+          notice = 'The user is already in the group.'
+        end
+
         respond_to do |format|
-          format.html { redirect_to group_path(@group), notice: 'User accepted.' }
+          format.html { redirect_to group_path(@group), notice: notice }
         end
       end
-    elsif member?(params[:group_id], current_user.id) && @group.privacy == 'closed'
-      @membership_request = get_membership_request(params[:group_id], params[:user_id])
-      if @membership_request.present?
+    elsif is_member?(params[:group_id], current_user.id).present? && @group.privacy == 'closed'
+      @membership_request = is_request?(params[:group_id], params[:user_id])
+
+      if @membership_request.present? && @membership_request.first.status == 'pending'
         @membership_request.first.update(
             status:          'joined',
             admission_time:  Time.now,
@@ -85,31 +105,67 @@ class GroupMembersController < ApplicationController
     end
   end
 
-  def leave
-    @membership.group_id        = params[:group_id]
-    @membership.user_id         = current_user.id
 
-    if member.present?
-      GroupMembership.destroy_all(["group_id = ? AND user_id = ?", @membership.group_id.to_i, @membership.user_id.to_i])
-      @group.members_counter -=1
-      @group.save
+  def decline_member
+    if @group.user_id == current_user.id
+      @membership_request = is_request?(params[:group_id], params[:user_id])
 
-      respond_to do |format|
-        format.html { redirect_to group_path(@group), notice: "You left the group." }
-        # format.json { render json: @membership.errors, status: :unprocessable_entity }
+      if @membership_request.present?
+        if  @membership_request.first.status == 'joined'
+          @group.members_counter -=1
+          @group.save
+        end
+
+        @membership_request.first.destroy
+
+        # @membership_request.first.update(
+        #     status:          'declined',
+        #     admission_time:  Time.now,
+        #     accepted_by: current_user.id
+        # )
+        respond_to do |format|
+          format.html { redirect_to group_path(@group), alert: 'User declined.' }
+        end
       end
     else
       respond_to do |format|
-        format.html { redirect_to group_path(@group), alert: 'You are not in group.' }
-        # format.json { redirect_to group_path(@group), status: :ok}
+        format.html { redirect_to group_path(@group), alert: 'Action prohibited.' }
       end
     end
   end
 
+  def leave
+    @membership.group_id        = params[:group_id]
+    @membership.user_id         = current_user.id
 
-  def invite
 
+    @member = is_request?(params[:group_id], current_user.id)
+    if @member.present?
+
+      if @member.first.status == 'joined'
+        @group.members_counter -=1
+        @group.save
+      end
+      GroupMembership.destroy_all(["group_id = ? AND user_id = ?", @membership.group_id.to_i, @membership.user_id.to_i])
+
+      respond_to do |format|
+        format.html { redirect_to group_path(@group), notice: "You left the group." }
+      end
+    else
+      alert_msg = 'You are not in group.'
+      if current_user.id == @group.user_id
+        alert_msg = 'You are initiator. You you cant leave this group.'
+      end
+      respond_to do |format|
+        format.html { redirect_to group_path(@group), alert: alert_msg }
+      end
+    end
   end
+
+  # TODO feature method
+  # def invite
+  #
+  # end
 
 
 
@@ -127,19 +183,11 @@ class GroupMembersController < ApplicationController
     @membership = GroupMembership.new()
   end
 
-  def get_membership_request(group_id, user_id)
+  def is_request?(group_id, user_id)
     GroupMembership.where(["group_id = ? AND user_id = ?", group_id.to_i, user_id.to_i]).first(1)
   end
 
-  def member
-    GroupMembership.where(["group_id = ? AND user_id = ?", @membership.group_id.to_i, @membership.user_id.to_i]).first(1)
-  end
-
-  def get_member
-    GroupMembership.where(["group_id = ? AND user_id = ? AND status = 'joined'", @membership.group_id.to_i, @membership.user_id.to_i])
-  end
-
-  def member?(group_id, user_id)
+  def is_member?(group_id, user_id)
     GroupMembership.where(["group_id = ? AND user_id = ? AND status = 'joined'", group_id.to_i, user_id.to_i]).first(1)
   end
 
