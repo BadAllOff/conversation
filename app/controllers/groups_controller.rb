@@ -14,6 +14,11 @@ class GroupsController < ApplicationController
     render 'index'
   end
 
+  def my
+    @groups = Group.all.where("groups.user_id = ?", current_user.id ).order(:created_at)
+    render 'my_groups'
+  end
+
   # GET /groups/1
   # GET /groups/1.json
   def show
@@ -41,7 +46,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to group_path(@group), notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
         format.html { render :new }

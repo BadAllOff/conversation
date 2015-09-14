@@ -1,0 +1,22 @@
+%ul.list-group
+  - group.members.each do |member|
+    %li.list-group-item
+      .media
+        .media-left.col-xs-3.col-md-2
+          %img.media-object.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(member.user.personal_photo.url(:thumb))}
+          - if member.status === 'joined'
+            %span.label.label-success
+              Member
+        .media-body
+          .media-heading
+            = member.user.first_name
+            = member.user.last_name
+            %div.pull-right
+              = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-success btn-lg' do
+                = fa_icon 'plus'
+                %span.visible-md-inline.visible-lg-inline
+                  Accept
+              = link_to decline_member_from_group_path(group.id, member.user_id), class: 'btn btn-danger btn-lg' do
+                = fa_icon 'ban'
+                %span.visible-md-inline.visible-lg-inline
+                  Decline
