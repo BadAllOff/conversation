@@ -14,17 +14,18 @@
     = f.label :email, class: 'control-label col-sm-2'
     .col-sm-6
       = f.email_field :email, class: 'form-control'
-  .field.form-group
-    = f.label :password, class: 'control-label col-sm-2'
-    - if @minimum_password_length
-      %em
-        (#{@minimum_password_length} characters minimum)
-    .col-sm-6
-      = f.password_field :password, autocomplete: "off", class: 'form-control'
-  .field.form-group
-    = f.label :password_confirmation, class: 'control-label col-sm-2'
-    .col-sm-6
-      = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
+  - if f.object.password_required?
+    .field.form-group
+      = f.label :password, class: 'control-label col-sm-2'
+      - if @minimum_password_length
+        %em
+          (#{@minimum_password_length} characters minimum)
+      .col-sm-6
+        = f.password_field :password, autocomplete: "off", class: 'form-control'
+    .field.form-group
+      = f.label :password_confirmation, class: 'control-label col-sm-2'
+      .col-sm-6
+        = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
   .actions.form-group
     .col-sm-offset-2.col-sm-6
       = f.submit "Sign up", class: 'btn btn-primary btn-lg'
