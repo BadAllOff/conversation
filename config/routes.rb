@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
 
+  get 'group_members/join/:group_id' => 'group_members#join', as:   :join_group
+  get 'group_members/leave/:group_id' => 'group_members#leave', as: :leave_group
+  get 'group_members/accept_member/:group_id/:user_id' => 'group_members#accept_member', as: :accept_member_to_group
+  get 'group_members/decline_member/:group_id/:user_id' => 'group_members#decline_member', as: :decline_member_from_group
+
   resources :groups do
     collection do
       get 'show_all'
+      get 'my'
     end
   end
-  devise_for :users
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

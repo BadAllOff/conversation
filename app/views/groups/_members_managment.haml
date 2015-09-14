@@ -1,0 +1,15 @@
+%ul.list-group
+  - group.members.each do |member|
+    %li.list-group-item
+      .media
+        .media-left.col-xs-3.col-md-2
+          %img.media-object.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(member.user.personal_photo.url(:thumb))}
+        .media-body
+          .media-heading
+            = member.user.first_name
+            - if member.status == 'pending'
+              %div.pull-right
+                = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-lg btn-success' do
+                  = fa_icon 'plus'
+                  %span.visible-md-inline.visible-lg-inline
+                    Accept

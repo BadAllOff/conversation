@@ -1,0 +1,10 @@
+%ul.list-group
+  - group.members.each do |member|
+    - if member.status == 'joined'
+      %li.list-group-item
+        .media
+          .media-left.col-xs-3.col-md-2
+            %img.media-object.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(member.user.personal_photo.url(:thumb))}
+          .media-body
+            .media-heading
+              = member.user.first_name

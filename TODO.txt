@@ -1,1 +1,1 @@
-TODO Avatar for users (paperclip carrierview)
+ DONE - Avatar for users (paperclip carrierview)

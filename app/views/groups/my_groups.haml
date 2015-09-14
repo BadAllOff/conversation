@@ -1,0 +1,8 @@
+%h1 Listing Groups initiated by you
+%hr.colorgraph
+= link_to 'New Group', new_group_path, class: 'btn btn-xs btn-primary'
+%br/
+%br/
+- if @groups
+  - @groups.each do |group|
+    = render partial: 'groups/group', locals: {group: group}
