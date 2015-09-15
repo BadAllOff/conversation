@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :authentications
   belongs_to :group
   has_many :groups, dependent: :destroy
   has_many :group_memberships, dependent: :destroy
@@ -9,36 +10,35 @@ class User < ActiveRecord::Base
   validates_with AttachmentSizeValidator, attributes: :personal_photo, less_than: 2.megabytes
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :omniauthable, :recoverable, :rememberable, :trackable, :confirmable, :validatable, password_length: 8..128
+  devise :database_authenticatable, :registerable, :omniauthable,
+         :recoverable, :rememberable, :trackable, :confirmable, :validatable, password_length: 8..128
   validates :first_name, :last_name, :presence => true
 
-
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      # user.password = Devise.friendly_token[0,20]
-      user.first_name = auth.info.name   # assuming the user model has a name e
-    end
-  end
-
-  def self.new_with_session(params,session)
-    if session["devise.user_attributes"]
-      new(session["devise.user_attributes"], without_protection:true) do |user|
-        user.attributes = params
-        user.valid?
-      end
-    else
-      super
-    end
+  def apply_omniauth(omni)
+    authentications.build(provider: omni['provider'],
+                          uid: omni['uid'],
+                          token: omni['credentials']['token'],
+                          token_secret: omni['credentials']['secret'])
   end
 
   def password_required?
-    super && provider.blank?
+    (authentications.empty? || !password.blank?) && super
   end
 
   def update_with_password(params, *options)
     if encrypted_password.blank?
       update_attributes(params, *options)
+    else
+      super
+    end
+  end
+
+  def self.new_with_session(params, session)
+    if session["devise.user_attributes"]
+      new(session["devise.user_attributes"], without_protection: true) do |user|
+        user.attributes = params
+        user.valid?
+      end
     else
       super
     end
