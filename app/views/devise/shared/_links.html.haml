@@ -1,3 +1,12 @@
+- if devise_mapping.omniauthable?
+  %ul.list-unstyled.list-inline
+    - resource_class.omniauth_providers.each do |provider|
+      %li
+        = link_to omniauth_authorize_path(resource_name, provider), class:'btn btn-default btn-lg' do
+          = fa_icon "#{provider.to_s.downcase} 2x"
+          Sign in with
+          =provider.to_s.titleize
+%hr.colorgraph
 - if controller_name != 'sessions'
   = link_to "Log in", new_session_path(resource_name)
   %br/
@@ -13,14 +22,3 @@
 - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
   = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
   %br/
-- if devise_mapping.omniauthable?
-  - resource_class.omniauth_providers.each do |provider|
-    = link_to omniauth_authorize_path(resource_name, provider), class:'btn btn-info' do
-      = fa_icon "#{provider.to_s.downcase}"
-      Sign in with
-      =provider.to_s.titleize
-    %br/
-
-  = link_to user_omniauth_authorize_path(:twitter), class:'btn btn-info' do
-    = fa_icon "twitter"
-    Sign in with Twitter
