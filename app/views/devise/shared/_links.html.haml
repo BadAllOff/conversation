@@ -3,7 +3,7 @@
     - resource_class.omniauth_providers.each do |provider|
       %li
         = link_to omniauth_authorize_path(resource_name, provider), class:'btn btn-default btn-lg' do
-          = fa_icon "#{provider.to_s.downcase} 2x"
+          = fa_icon "#{provider.to_s.downcase}"
           Sign in with
           =provider.to_s.titleize
 %hr.colorgraph
