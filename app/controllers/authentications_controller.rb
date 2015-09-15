@@ -1,19 +1,17 @@
+# TODO HOME and other paths
 class AuthenticationsController < ApplicationController
-  def index
-  end
-
-  def create
-  end
-
-  def destroy
-  end
+  # def index
+  #   @authentications = current_user.authentications.all
+  # end
+  #
+  # def destroy
+  #   @authentication = Authentication.find(params[:id])
+  #   @authentication.destroy
+  #   redirect_to authentications_url, :notice => "Successfully destroyed authentication."
+  # end
 
   def home
 
-  end
-
-  def failure
-    redirect_to new_user_registration_path
   end
 
   def twitter
@@ -34,12 +32,14 @@ class AuthenticationsController < ApplicationController
     else
       user = User.new
       user.apply_omniauth(omni)
+      user.first_name = omni.info.name
 
       if user.save
         flash[:notice] = "Logged in. With Twitter"
         sign_in_and_redirect User.find(user.id)
       else
         session[:omniauth] = omni.except('extra')
+        session["devise.user_attributes"] = user.attributes
         redirect_to new_user_registration_path
       end
     end
@@ -47,7 +47,7 @@ class AuthenticationsController < ApplicationController
 
   def facebook
     omni = request.env["omniauth.auth"]
-    # raise omni.to_yaml
+   #raise omni.to_yaml
     authentication = Authentication.find_by_provider_and_uid(omni['provider'], omni['uid'])
 
     if authentication
@@ -62,17 +62,18 @@ class AuthenticationsController < ApplicationController
       sign_in_and_redirect current_user
     else
       user = User.new
-      user.email      = omni['extra']['raw_info'].email
-      user.first_name = omni['extra']['raw_info'].first_name
-      user.last_name  = omni['extra']['raw_info'].last_name
-
       user.apply_omniauth(omni)
+      user.email      = omni['info'].email
+      user.first_name = omni['info'].first_name
+      user.last_name  = omni['info'].last_name
 
+      user.skip_confirmation!
       if user.save
         flash[:notice] = "Logged in."
         sign_in_and_redirect User.find(user.id)
       else
         session[:omniauth] = omni.except('extra')
+        session["devise.user_attributes"] = user.attributes
         redirect_to new_user_registration_path
       end
     end
