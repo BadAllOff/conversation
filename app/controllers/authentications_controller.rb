@@ -1,4 +1,5 @@
 # TODO HOME and other paths
+# TODO VK registration when app and OAuth will work correctly
 class AuthenticationsController < ApplicationController
   # def index
   #   @authentications = current_user.authentications.all
