@@ -1,1 +1,4 @@
  DONE - Avatar for users (paperclip carrierview)
+ TODO - production mailer setup
+ TODO - production join group buttons fix
+ TODO - production User profile pic not shown
