@@ -13,4 +13,9 @@ class RegistrationsController < Devise::RegistrationsController
     session[:omniauth] = nil unless @user.new_record?
   end
 
+  protected
+
+  def after_update_path_for(resource)
+    edit_user_registration_path(resource)
+  end
 end
