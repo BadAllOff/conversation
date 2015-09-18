@@ -3,3 +3,6 @@ Conversation app - web-application that i recently did to help people find partn
 
 Next enviroment @variables must be initiated to start app
 
+Example on Heroku
+
+https://conversation-app.herokuapp.com
