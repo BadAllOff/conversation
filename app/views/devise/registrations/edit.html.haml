@@ -5,7 +5,7 @@
   = devise_error_messages!
   -#= image_tag resource.personal_photo.url, class: 'img-responsive'
   -#= image_tag resource.personal_photo.url(:medium), class: 'img-responsive'
-  = image_tag resource.personal_photo.url(:thumb), class: 'img-responsive img-circle'
+  = image_tag resource.personal_photo.url(:thumb), class: 'img-responsive img-circle visible-xs-block', style: 'margin: 0 auto;'
   .field.form-group
     = f.label :personal_photo, class: 'control-label col-sm-2'
     .col-sm-6

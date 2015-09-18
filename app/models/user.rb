@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :authentications
+  has_many :authentications, dependent: :destroy
   belongs_to :group
   has_many :groups, dependent: :destroy
   has_many :group_memberships, dependent: :destroy
