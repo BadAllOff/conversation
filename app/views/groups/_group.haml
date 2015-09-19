@@ -137,7 +137,7 @@
           = fa_icon "envelope-o"
         %button.btn.btn-sm.btn-default{"data-original-title" => "Cheers up!", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "thumbs-o-up"
-        %span.pull-right
+        .btn-toolbar.pull-right
           - case group.privacy
             - when 'public'
               = link_to join_group_path(group), class: 'btn btn-info' do
