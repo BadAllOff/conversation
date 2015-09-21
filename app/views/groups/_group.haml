@@ -57,6 +57,7 @@
                 = group.venue
                 = link_to '#' do
                   = fa_icon 'map-marker', class: 'fa-lg'
+                  show on map
               %dt Members:
               %dd
                 = group.members_counter
@@ -69,12 +70,17 @@
                 %hr.colorgraph
                 - if user_signed_in? && current_user.id == group.user_id
                   = render partial: 'groups/owner_members_managment', locals: {group: group}
-                - else
+                - elsif user_signed_in?
                   - case group.privacy
-                    - when 'public', 'closed'
-                      = render partial: 'groups/members_managment', locals: {group: group}
+                    - when 'closed'
+                      - if group.members.any? {|member| member.user_id == current_user.id && member.status == 'joined'}
+                        = render partial: 'groups/members_managment', locals: {group: group}
+                      - else
+                        = render partial: 'groups/members_list', locals: {group: group}
                     - else
                       = render partial: 'groups/members_list', locals: {group: group}
+                - else
+                  = render partial: 'groups/members_list', locals: {group: group}
           .col-md-12.col-lg-12.hidden-xs.hidden-sm
             %table.table.table-user-information
               %tbody
