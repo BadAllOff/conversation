@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20150923074319) do
     t.integer  "members_counter", default: 1
     t.float    "latitude"
     t.float    "longitude"
-    t.integer  "gmap_zoom"
+    t.integer  "gmap_zoom",       default: 14
   end
 
   create_table "sessions", force: :cascade do |t|
