@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150923074319) do
+ActiveRecord::Schema.define(version: 20150923091521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,19 +39,19 @@ ActiveRecord::Schema.define(version: 20150923074319) do
   add_index "group_memberships", ["group_id", "user_id"], name: "index_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
 
   create_table "groups", force: :cascade do |t|
-    t.string   "group_name",      default: "",       null: false
-    t.text     "topics",          default: "",       null: false
+    t.string   "group_name",      default: "",                null: false
+    t.text     "topics",          default: "",                null: false
     t.datetime "starts_at"
     t.datetime "ends_at"
-    t.string   "venue",           default: "",       null: false
-    t.integer  "max_members",     default: 1,        null: false
+    t.string   "venue",           default: "",                null: false
+    t.integer  "max_members",     default: 1,                 null: false
     t.integer  "user_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.string   "privacy",         default: "public"
     t.integer  "members_counter", default: 1
-    t.float    "latitude"
-    t.float    "longitude"
+    t.float    "latitude",        default: 40.36603994719198
+    t.float    "longitude",       default: 49.83751684427261
     t.integer  "gmap_zoom",       default: 14
   end
 

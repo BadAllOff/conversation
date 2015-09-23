@@ -50,6 +50,25 @@
     = f.label :ends_at, class: 'control-label col-sm-2'
     .col-sm-6
       = f.datetime_select :ends_at, class: 'form-control'
+  .field.form-group
+    .col-sm-6
+      = f.text_field :latitude, id: 'gmap_latitude'
+      = f.text_field :longitude, id: 'gmap_longitude'
+      = f.text_field :gmap_zoom, id: 'gmap_zoom'
+  .field.form-group
+    .embed-responsive.embed-responsive-16by9
+      #map.embed-responsive-item{style: 'width: 800px; height: 400px;'}
   .actions.form-group
     .col-sm-offset-2.col-sm-6
       = f.submit class: 'btn btn-primary btn-lg'
+
+%script{src: '//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry', type: 'text/javascript'}
+%script{src: '//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js', type: 'text/javascript'}
+
+:javascript
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(#{raw @hash.to_json});
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });

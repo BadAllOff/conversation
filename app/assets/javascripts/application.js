@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require underscore-min
+//= require gmaps/google
 //= require_tree .
 
 var ready;
@@ -51,12 +53,8 @@ ready = function() {
         e.preventDefault();
     });
 
+
 };
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
-
-
-$(document).ready(function() {
-
-});

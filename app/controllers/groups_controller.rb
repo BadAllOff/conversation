@@ -32,7 +32,10 @@ class GroupsController < ApplicationController
   # GET /groups/1/edit
   def edit
     if @group.user_id == current_user.id
-
+      @hash = Gmaps4rails.build_markers(@group) do |group, marker|
+        marker.lat group.latitude
+        marker.lng group.longitude
+      end
     else
       redirect_to @group, alert: "You can't edit this group. Only owner can edit group.";
     end
@@ -91,6 +94,6 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:group_name, :topics, :starts_at, :ends_at, :venue, :max_members, :privacy, :latitude, :longitude)
+      params.require(:group).permit(:group_name, :topics, :starts_at, :ends_at, :venue, :max_members, :privacy, :latitude, :longitude, :gmap_zoom)
     end
 end
