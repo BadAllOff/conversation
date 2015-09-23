@@ -26,7 +26,7 @@
     - if user_signed_in? && current_user.id == group.user_id
       .btn-group.pull-right{role: 'group'}
         = link_to 'Show', group, class: 'btn btn-default'
-        = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning'
+        = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning', 'data-no-turbolink' => true
         = link_to 'Destroy', group, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
   .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group_#{group.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
