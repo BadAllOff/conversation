@@ -10,4 +10,7 @@ class Group < ActiveRecord::Base
                                           greater_than_or_equal_to: 2,
                                           less_than: 1001  }
   validates_numericality_of :latitude, :longitude
+  validates :gmap_zoom,  numericality: { only_integer: true,
+                                         greater_than_or_equal_to: 1,
+                                         less_than_or_equal_to: 21 }
 end
