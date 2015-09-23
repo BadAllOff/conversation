@@ -12,7 +12,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 
-
 gem 'haml'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem "font-awesome-rails", '4.4.0'
@@ -25,6 +24,8 @@ gem 'fb_graph'
 gem 'validates_timeliness', '~> 3.0'
 gem "paperclip", "~> 4.3"
 gem 'aws-sdk', '< 2.0'
+gem 'gmaps4rails'
+
 
 group :development, :test do
   gem 'byebug'
