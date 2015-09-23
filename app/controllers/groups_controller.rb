@@ -27,14 +27,18 @@ class GroupsController < ApplicationController
   # GET /groups/new
   def new
     @group = Group.new
+    @hash = Gmaps4rails.build_markers(@group) do |group, marker|
+      marker.lat group.latitude
+      marker.lng group.longitude
+    end
   end
 
   # GET /groups/1/edit
   def edit
     if @group.user_id == current_user.id
       @hash = Gmaps4rails.build_markers(@group) do |group, marker|
-        marker.lat group.latitude
-        marker.lng group.longitude
+        marker.lat group.latitude || 40.36603994719198
+        marker.lng group.longitude || 49.83751684427261
       end
     else
       redirect_to @group, alert: "You can't edit this group. Only owner can edit group.";
