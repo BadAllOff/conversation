@@ -37,51 +37,7 @@
         %h3.panel-title Information about group
       .panel-body
         .row
-          .col-xs-12.col-sm-12.hidden-md.hidden-lg
-            %dl
-              %dt Initiator:
-              %dd
-                = group.user.first_name
-                = group.user.last_name
-              %dt Starts:
-              %dd
-                = group.starts_at.to_formatted_s(:short)
-              %dt Ends:
-              %dd
-                = group.ends_at.to_formatted_s(:short)
-              %dt Topics:
-              %dd
-                = group.topics
-              %dt Meeting point:
-              %dd
-                = group.venue
-                = link_to '#' do
-                  = fa_icon 'map-marker', class: 'fa-lg'
-                  show on map
-              %dt Members:
-              %dd
-                = group.members_counter
-                of the
-                =group.max_members
-                available
-              %dt
-                Joined:
-              %dd
-                %hr.colorgraph
-                - if user_signed_in? && current_user.id == group.user_id
-                  = render partial: 'groups/owner_members_managment', locals: {group: group}
-                - elsif user_signed_in?
-                  - case group.privacy
-                    - when 'closed'
-                      - if group.members.any? {|member| member.user_id == current_user.id && member.status == 'joined'}
-                        = render partial: 'groups/members_managment', locals: {group: group}
-                      - else
-                        = render partial: 'groups/members_list', locals: {group: group}
-                    - else
-                      = render partial: 'groups/members_list', locals: {group: group}
-                - else
-                  = render partial: 'groups/members_list', locals: {group: group}
-          .col-md-12.col-lg-12.hidden-xs.hidden-sm
+          .col-xs-12.col-md-12
             %table.table.table-user-information
               %tbody
                 %tr
@@ -126,6 +82,8 @@
                     of the
                     =group.max_members
                     available
+          .col-md-12.col-lg-12
+            %div{"id" => "venue_map_#{group.id}"}
             %p
               %strong
                 Joined:
