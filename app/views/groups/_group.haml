@@ -2,6 +2,25 @@
   .col-xs-3.col-sm-2.col-md-2.col-lg-2
     %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(group.user.personal_photo.url(:thumb))}
   .col-xs-8.col-sm-9.col-md-9.col-lg-9
+    - if user_signed_in? && current_user.id == group.user_id
+      %span.pull-right
+        .dropdown
+          %a#group_control_btn.btn.btn-default{data: {toggle: "dropdown"}, "aria-haspopup"=>"true", "aria-expanded"=>"false"}
+            = fa_icon "cogs"
+            %span.caret
+          %ul.dropdown-menu{"aria-labelledby"=>"group_control_btn"}
+            %li
+              = link_to group do
+                = fa_icon 'eye'
+                Show
+            %li
+              = link_to edit_group_path(group), 'data-no-turbolink' => true do
+                = fa_icon 'edit'
+                Edit
+            %li
+              = link_to group, method: :delete, data: { confirm: 'Are you sure?' } do
+                = fa_icon 'trash'
+                Destroy
     %strong
       = group.user.first_name
       = group.user.last_name
@@ -23,11 +42,6 @@
               = fa_icon 'user'
               Private
         User level: Intermediate
-    - if user_signed_in? && current_user.id == group.user_id
-      .btn-group.pull-right{role: 'group'}
-        = link_to 'Show', group, class: 'btn btn-default'
-        = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning', 'data-no-turbolink' => true
-        = link_to 'Destroy', group, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
   .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group_#{group.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
 .row.user-infos{class: "show_group_#{group.id}"}
