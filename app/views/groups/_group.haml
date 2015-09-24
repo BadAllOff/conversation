@@ -85,8 +85,9 @@
                       Meeting point:
                   %td.text-left
                     = group.venue
-                    = link_to "#build_map", class: "btn btn-lg", data:{toggle: 'collapse', target: "#venue_map_#{group.id}"}, "aria-expanded" => "false" do
+                    = link_to "#build_map", class: "btn btn-lg show_map_btn", data:{toggle: 'collapse', target: "#venue_map_#{group.id}"}, "aria-expanded" => "false" do
                       = fa_icon 'map-marker', class: 'fa-lg'
+                    = link_to 'Show Map', show_map_group_path(group)
                 %tr
                   %td.text-right
                     %strong

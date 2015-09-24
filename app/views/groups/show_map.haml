@@ -1,0 +1,17 @@
+.embed-responsive.embed-responsive-16by9
+  .embed-responsive-item{id: "map_#{@group.id}"}
+%script{src: '//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry', type: 'text/javascript'}
+%script{src: '//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js', type: 'text/javascript'}
+:javascript
+
+  handler = Gmaps.build('Google');
+          var markers_options = { draggable: false };
+          handler.buildMap({
+            provider: { auto_zoom: false },
+            internal: {id: "map_#{@group.id}"}},
+            function(){
+              markers = handler.addMarkers(#{raw @hash.to_json}, markers_options);
+              handler.bounds.extendWith(markers);
+              handler.fitMapToBounds();
+              handler.getMap().setZoom(14);
+          });

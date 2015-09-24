@@ -54,6 +54,19 @@ ready = function() {
     });
 
 
+
+    $('a.show_map_btn').click(function(event) {
+        event.preventDefault();
+
+        $('#main').load(this.href + ' #main *', function(responseText, status) {
+            if (status === 'success') {
+                $('#notification-bar').text('The page has been successfully loaded');
+            } else {
+                $('#notification-bar').text('An error occurred');
+            }
+        });
+    });
+
 };
 
 $(document).ready(ready);
