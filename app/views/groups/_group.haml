@@ -85,9 +85,13 @@
                       Meeting point:
                   %td.text-left
                     = group.venue
-                    = link_to "#build_map", class: "btn btn-lg show_map_btn", data:{toggle: 'collapse', target: "#venue_map_#{group.id}"}, "aria-expanded" => "false" do
-                      = fa_icon 'map-marker', class: 'fa-lg'
-                    = link_to 'Show Map', show_map_group_path(group)
+                    = link_to show_map_group_url(group), class: "show_map_btn", data:{toggle: 'collapse', target: "#venue_map_#{group.id}", map_image_url: ""}, "aria-expanded" => "false", 'data-no-turbolink' => true do
+                      = fa_icon 'map-marker'
+                      Show map
+                    .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "false"}
+                %tr
+                  %td
+
                 %tr
                   %td.text-right
                     %strong
@@ -97,8 +101,6 @@
                     of the
                     =group.max_members
                     available
-            .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "true", style: 'border: 1px solid red;'}
-              Give me Map here! NOW!
             %strong
               Joined:
             %hr.colorgraph

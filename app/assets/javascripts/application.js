@@ -53,18 +53,18 @@ ready = function() {
         e.preventDefault();
     });
 
-
-
     $('a.show_map_btn').click(function(event) {
         event.preventDefault();
 
-        $('#main').load(this.href + ' #main *', function(responseText, status) {
-            if (status === 'success') {
-                $('#notification-bar').text('The page has been successfully loaded');
-            } else {
-                $('#notification-bar').text('An error occurred');
-            }
+        gmapDiv = $(this).data('target');
+        showMapPath = $(this).attr('href');
+        console.log(showMapPath);
+
+        $.get( showMapPath, function( data ) {
+            $(gmapDiv).html( data );
+            console.log( "Load was performed." );
         });
+
     });
 
 };
