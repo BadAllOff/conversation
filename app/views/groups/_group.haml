@@ -52,7 +52,7 @@
       .panel-body
         .row
           .col-xs-12.col-md-12
-            %table.table.table-user-information
+            %table.table.table-user-information.table-responsive
               %tbody
                 %tr
                   %td.col-md-3.col-lg-2.text-right
@@ -85,7 +85,7 @@
                       Meeting point:
                   %td.text-left
                     = group.venue
-                    = link_to '#' do
+                    = link_to "#build_map", class: "btn btn-lg", data:{toggle: 'collapse', target: "#venue_map_#{group.id}"}, "aria-expanded" => "false" do
                       = fa_icon 'map-marker', class: 'fa-lg'
                 %tr
                   %td.text-right
@@ -96,20 +96,19 @@
                     of the
                     =group.max_members
                     available
-          .col-md-12.col-lg-12
-            %div{"id" => "venue_map_#{group.id}"}
-            %p
-              %strong
-                Joined:
-              %hr.colorgraph
-              - if user_signed_in? && current_user.id == group.user_id
-                = render partial: 'groups/owner_members_managment', locals: {group: group}
-              - else
-                - case group.privacy
-                  - when 'public', 'closed'
-                    = render partial: 'groups/members_managment', locals: {group: group}
-                  - else
-                    = render partial: 'groups/members_list', locals: {group: group}
+            .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "true", style: 'border: 1px solid red;'}
+              Give me Map here! NOW!
+            %strong
+              Joined:
+            %hr.colorgraph
+            - if user_signed_in? && current_user.id == group.user_id
+              = render partial: 'groups/owner_members_managment', locals: {group: group}
+            - else
+              - case group.privacy
+                - when 'public', 'closed'
+                  = render partial: 'groups/members_managment', locals: {group: group}
+                - else
+                  = render partial: 'groups/members_list', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"
