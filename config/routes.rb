@@ -14,6 +14,10 @@ Rails.application.routes.draw do
       get 'show_all'
       get 'my'
     end
+
+    member do
+      get "show_map"
+    end
   end
   devise_for :users, controllers: {omniauth_callbacks: "authentications", registrations: "registrations"}
   # The priority is based upon order of creation: first created -> highest priority.

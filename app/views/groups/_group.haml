@@ -2,6 +2,25 @@
   .col-xs-3.col-sm-2.col-md-2.col-lg-2
     %img.img-responsive.img-circle{:alt => "User Pic", :src => asset_path(group.user.personal_photo.url(:thumb))}
   .col-xs-8.col-sm-9.col-md-9.col-lg-9
+    - if user_signed_in? && current_user.id == group.user_id
+      %span.pull-right
+        .dropdown
+          %a#group_control_btn.btn.btn-default{data: {toggle: "dropdown"}, "aria-haspopup"=>"true", "aria-expanded"=>"false"}
+            = fa_icon "cogs"
+            %span.caret
+          %ul.dropdown-menu{"aria-labelledby"=>"group_control_btn"}
+            %li
+              = link_to group do
+                = fa_icon 'eye'
+                Show
+            %li
+              = link_to edit_group_path(group), 'data-no-turbolink' => true do
+                = fa_icon 'edit'
+                Edit
+            %li
+              = link_to group, method: :delete, data: { confirm: 'Are you sure?' } do
+                = fa_icon 'trash'
+                Destroy
     %strong
       = group.user.first_name
       = group.user.last_name
@@ -23,11 +42,6 @@
               = fa_icon 'user'
               Private
         User level: Intermediate
-    - if user_signed_in? && current_user.id == group.user_id
-      .btn-group.pull-right{role: 'group'}
-        = link_to 'Show', group, class: 'btn btn-default'
-        = link_to 'Edit', edit_group_path(group), class: 'btn btn-warning', 'data-no-turbolink' => true
-        = link_to 'Destroy', group, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
   .col-xs-1.col-sm-1.col-md-1.col-lg-1.dropdown-user{"data-for" => ".show_group_#{group.id}"}
     %i.glyphicon.glyphicon-chevron-down.text-muted
 .row.user-infos{class: "show_group_#{group.id}"}
@@ -37,35 +51,8 @@
         %h3.panel-title Information about group
       .panel-body
         .row
-          .col-xs-12.col-sm-12.hidden-md.hidden-lg
-            %dl
-              %dt Initiator:
-              %dd
-                = group.user.first_name
-                = group.user.last_name
-              %dt Starts:
-              %dd
-                = group.starts_at.to_formatted_s(:short)
-              %dt Ends:
-              %dd
-                = group.ends_at.to_formatted_s(:short)
-              %dt Topics:
-              %dd
-                = group.topics
-              %dt Meeting point:
-              %dd
-                = group.venue
-                = link_to '#' do
-                  = fa_icon 'map-marker', class: 'fa-lg'
-                  show on map
-              %dt Members:
-              %dd
-                = group.members_counter
-                of the
-                =group.max_members
-                available
-          .col-md-12.col-lg-12.hidden-xs.hidden-sm
-            %table.table.table-user-information
+          .col-xs-12.col-md-12
+            %table.table.table-user-information.table-responsive
               %tbody
                 %tr
                   %td.col-md-3.col-lg-2.text-right
@@ -98,8 +85,13 @@
                       Meeting point:
                   %td.text-left
                     = group.venue
-                    = link_to '#' do
-                      = fa_icon 'map-marker', class: 'fa-lg'
+                    = link_to show_map_group_url(group), class: "show_map_btn", data:{toggle: 'collapse', target: "#venue_map_#{group.id}", map_image_url: ""}, "aria-expanded" => "false", 'data-no-turbolink' => true do
+                      = fa_icon 'map-marker'
+                      Show map
+                    .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "false"}
+                %tr
+                  %td
+
                 %tr
                   %td.text-right
                     %strong
@@ -109,20 +101,17 @@
                     of the
                     =group.max_members
                     available
-          .col-md-12.col-lg-12
-            %div{"id" => "venue_map_#{group.id}"}
-            %p
-              %strong
-                Joined:
-              %hr.colorgraph
-              - if user_signed_in? && current_user.id == group.user_id
-                = render partial: 'groups/owner_members_managment', locals: {group: group}
-              - else
-                - case group.privacy
-                  - when 'public', 'closed'
-                    = render partial: 'groups/members_managment', locals: {group: group}
-                  - else
-                    = render partial: 'groups/members_list', locals: {group: group}
+            %strong
+              Joined:
+            %hr.colorgraph
+            - if user_signed_in? && current_user.id == group.user_id
+              = render partial: 'groups/owner_members_managment', locals: {group: group}
+            - else
+              - case group.privacy
+                - when 'public', 'closed'
+                  = render partial: 'groups/members_managment', locals: {group: group}
+                - else
+                  = render partial: 'groups/members_list', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"

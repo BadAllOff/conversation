@@ -53,6 +53,19 @@ ready = function() {
         e.preventDefault();
     });
 
+    $('a.show_map_btn').click(function(event) {
+        event.preventDefault();
+
+        gmapDiv = $(this).data('target');
+        showMapPath = $(this).attr('href');
+        console.log(showMapPath);
+
+        $.get( showMapPath, function( data ) {
+            $(gmapDiv).html( data );
+            console.log( "Load was performed." );
+        });
+
+    });
 
 };
 
