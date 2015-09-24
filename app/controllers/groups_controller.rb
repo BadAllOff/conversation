@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index,:show,:new, :show_all]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :show_map]
+  before_action :authenticate_user!, except: [:index,:show,:new, :show_all, :show_map]
   # GET /groups
   # GET /groups.json
   def index
@@ -22,6 +22,19 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+  end
+
+  def show_map
+    @hash = Gmaps4rails.build_markers(@group) do |group, marker|
+      marker.lat group.latitude
+      marker.lng group.longitude
+      marker.infowindow ("<h4>#{group.group_name}</h4><p>#{group.venue}</p>")
+    end
+    respond_to do |format|
+      format.html { render :layout => false }
+      format.js { render :layout => false }
+    end
+
   end
 
   # GET /groups/new
