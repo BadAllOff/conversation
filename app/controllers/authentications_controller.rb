@@ -15,6 +15,11 @@ class AuthenticationsController < ApplicationController
 
   end
 
+  def failure
+    flash[:alert] = 'Sorry. Something wrong happened. We are working on that problem now.'
+    redirect_to root_path
+  end
+
   def twitter
     omni = request.env["omniauth.auth"]
     # raise omni.to_yaml
