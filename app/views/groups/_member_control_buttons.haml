@@ -1,0 +1,18 @@
+- if user_signed_in? && current_user.id == group.user_id
+  - unless member.status == 'joined'
+    = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-success' do
+      = fa_icon 'plus'
+      %span.visible-md-inline.visible-lg-inline
+        Accept
+  - else
+    = link_to decline_member_from_group_path(group.id, member.user_id), class: 'btn btn-danger' do
+      = fa_icon 'ban'
+      %span.visible-md-inline.visible-lg-inline
+        Decline
+- elsif user_signed_in? && group.privacy == 'closed'
+  - unless member.status == 'joined'
+    = link_to accept_member_to_group_path(group.id, member.user_id), class: 'btn btn-lg btn-success' do
+      = fa_icon 'plus'
+      %span.visible-md-inline.visible-lg-inline
+        Accept
+- else

@@ -1,0 +1,12 @@
+- group.members.each do |member|
+  .profile-header-container.col-xs-4.col-sm-4.col-md-3.col-lg-2
+    .profile-header-img
+      %img.media-object.img-responsive.img-circle{class: ("not_a_member" if member.status == 'pending'),
+                                                  alt: "User Pic",
+                                                  src: asset_path(member.user.personal_photo.url(:thumb))}
+      .rank-label-container
+        .label.label-default{class: ("rank-label" if member.status == 'joined')}
+          = member.user.first_name
+          = member.user.last_name
+    .profile-buttons
+      = render partial: 'groups/member_control_buttons', locals: {group: group, member: member}

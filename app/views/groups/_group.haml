@@ -88,10 +88,9 @@
                     = link_to show_map_group_url(group), class: "show_map_btn", data:{toggle: 'collapse', target: "#venue_map_#{group.id}", map_image_url: ""}, "aria-expanded" => "false", 'data-no-turbolink' => true do
                       = fa_icon 'map-marker'
                       Show map
-                    .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "false"}
                 %tr
-                  %td
-
+                  %td{colspan: 2}
+                    .collapse{"id" => "venue_map_#{group.id}", 'aria-expanded' => "false"}
                 %tr
                   %td.text-right
                     %strong
@@ -104,38 +103,37 @@
             %strong
               Joined:
             %hr.colorgraph
-            - if user_signed_in? && current_user.id == group.user_id
-              = render partial: 'groups/owner_members_managment', locals: {group: group}
-            - else
-              - case group.privacy
-                - when 'public', 'closed'
-                  = render partial: 'groups/members_managment', locals: {group: group}
-                - else
-                  = render partial: 'groups/members_list', locals: {group: group}
+              = render partial: 'groups/members', locals: {group: group}
       .panel-footer
         %button.btn.btn-sm.btn-default{"data-original-title" => "Send message to user", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "envelope-o"
         %button.btn.btn-sm.btn-default{"data-original-title" => "Cheers up!", "data-toggle" => "tooltip", :type => "button"}
           = fa_icon "thumbs-o-up"
         .btn-toolbar.pull-right
-          - case group.privacy
-            - when 'public'
-              = link_to join_group_path(group), class: 'btn btn-info' do
-                = fa_icon 'user-plus 2x'
-                .span.hidden-xs
-                  Join group
-            - when 'closed'
-              = link_to join_group_path(group), class: 'btn btn-success' do
-                = fa_icon 'user-plus 2x'
-                .span.hidden-xs
-                  Ask invitation
-            - when 'private'
-              = link_to join_group_path(group), class: 'btn btn-warning' do
-                = fa_icon 'user-plus 2x'
-                .span.hidden-xs
-                  Ask invitation
-          = link_to leave_group_path(group), class: 'btn btn-danger', data: {confirm: 'Are you shure you wanna leave the group?'} do
-            = fa_icon 'user-times 2x'
-            .span.hidden-xs
-              Leave group
+          - if user_signed_in?
+            - case group.privacy
+              - when 'public'
+                = link_to join_group_path(group), class: 'btn btn-info' do
+                  = fa_icon 'user-plus 2x'
+                  .span.hidden-xs
+                    Join group
+              - when 'closed'
+                = link_to join_group_path(group), class: 'btn btn-success' do
+                  = fa_icon 'user-plus 2x'
+                  .span.hidden-xs
+                    Ask invitation
+              - when 'private'
+                = link_to join_group_path(group), class: 'btn btn-warning' do
+                  = fa_icon 'user-plus 2x'
+                  .span.hidden-xs
+                    Ask invitation
+            = link_to leave_group_path(group), class: 'btn btn-danger', data: {confirm: 'Are you shure you wanna leave the group?'} do
+              = fa_icon 'user-times 2x'
+              .span.hidden-xs
+                Leave group
+          -else
+            = link_to new_user_session_path, class: 'btn btn-sm btn-primary' do
+              = fa_icon "sign-in", class: 'fa-lg'
+              Sign in to join
+
         .clearfix

@@ -8,12 +8,14 @@ class GroupsController < ApplicationController
     @groups = Group.all.where("groups.starts_at > ?", Time.now ).order(:starts_at)
   end
 
+  # GET /groups/show_all
   def show_all
     # todo change title of the page
     @groups = Group.all.order(:starts_at)
     render 'index'
   end
 
+  # GET /groups/my
   def my
     @groups = Group.all.where("groups.user_id = ?", current_user.id ).order(:created_at)
     render 'my_groups'
@@ -24,6 +26,7 @@ class GroupsController < ApplicationController
   def show
   end
 
+  # GET /groups/1/show_map
   def show_map
     @hash = Gmaps4rails.build_markers(@group) do |group, marker|
       marker.lat group.latitude

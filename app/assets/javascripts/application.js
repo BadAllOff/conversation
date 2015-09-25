@@ -52,18 +52,26 @@ ready = function() {
     $('button').click(function(e) {
         e.preventDefault();
     });
-
+    // Function to load and show map
     $('a.show_map_btn').click(function(event) {
         event.preventDefault();
 
         gmapDiv = $(this).data('target');
         showMapPath = $(this).attr('href');
-        console.log(showMapPath);
+        map_btn = $(this);
 
-        $.get( showMapPath, function( data ) {
-            $(gmapDiv).html( data );
-            console.log( "Load was performed." );
-        });
+        if (map_btn.hasClass("map_loaded"))
+        {
+            console.log( "Map is loaded previously." );
+        }else{
+            $.get( showMapPath, function( data ) {
+                $(gmapDiv).html( data );
+                map_btn.addClass('map_loaded');
+                console.log( "Load was performed." );
+            });
+        }
+
+
 
     });
 
