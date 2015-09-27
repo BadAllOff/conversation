@@ -10,6 +10,20 @@
     .col-sm-6
       = f.text_area :topics, class: 'form-control'
   .field.form-group
+    = f.label :starts_at, class: 'control-label col-sm-2'
+    .col-sm-6
+      .input-group.date
+        = f.text_field :starts_at, class: 'form-control', id: 'datetimepicker1'
+        %span.input-group-addon
+          %span.glyphicon.glyphicon-calendar
+  .field.form-group
+    = f.label :ends_at, class: 'control-label col-sm-2'
+    .col-sm-6
+      .input-group.date
+        = f.text_field :ends_at, class: 'form-control', id: 'datetimepicker2'
+        %span.input-group-addon
+          %span.glyphicon.glyphicon-calendar
+  .field.form-group
     = f.label :venue, class: 'control-label col-sm-2'
     .col-sm-6
       = f.text_field :venue, class: 'form-control'
@@ -46,24 +60,45 @@
           %small.help-block Anyone in the group can send invitations.
           %small.help-block Only group owner can accept new members.
   .field.form-group
-    = f.label :starts_at, class: 'control-label col-sm-2'
-    .col-sm-6
-      = f.datetime_select :starts_at, class: 'form-control'
-  .field.form-group
-    = f.label :ends_at, class: 'control-label col-sm-2'
-    .col-sm-6
-      = f.datetime_select :ends_at, class: 'form-control'
-  .field.form-group
     .col-sm-6
       = f.hidden_field :latitude, id: 'gmap_latitude'
       = f.hidden_field :longitude, id: 'gmap_longitude'
       = f.hidden_field :gmap_zoom, id: 'gmap_zoom'
-  .field.form-group
-    .col-sm-9
-
   .actions.form-group
     .col-sm-6
       = f.submit class: 'btn btn-primary btn-lg'
+
+
+-#.container
+-#  .col-md-5
+-#    .form-group
+-#      #datetimepicker6.input-group.date
+-#        %input.form-control{:type => "text"}/
+-#        %span.input-group-addon
+-#          %span.glyphicon.glyphicon-calendar
+-#  .col-md-5
+-#    .form-group
+-#      #datetimepicker7.input-group.date
+-#        %input.form-control{:type => "text"}/
+-#        %span.input-group-addon
+-#          %span.glyphicon.glyphicon-calendar
+:javascript
+  $(function () {
+        $('#datetimepicker1').datetimepicker({
+          format: "YY-MM-DD HH:mm"
+        });
+        $('#datetimepicker2').datetimepicker({
+          format: "YY-MM-DD HH:mm",
+          useCurrent: false //Important! See issue #1075
+        });
+        $("#datetimepicker1").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+
 
 %script{src: '//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry', type: 'text/javascript'}
 %script{src: '//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js', type: 'text/javascript'}
