@@ -29,10 +29,16 @@ gem 'gmaps4rails'
 
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.15.35'
-
+gem 'rack-mini-profiler'
 
 group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'byebug'
+end
+
+group :test do
+  gem 'shoulda-matchers'
 end
 
 group :development do
