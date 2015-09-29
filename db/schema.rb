@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20150923091521) do
     t.datetime "updated_at",                                  null: false
     t.string   "privacy",         default: "public"
     t.integer  "members_counter", default: 1
-    t.float    "latitude",        default: '40.36603994719198'
-    t.float    "longitude",       default: '49.83751684427261'
+    t.float    "latitude",        default: 40.36603994719198
+    t.float    "longitude",       default: 49.83751684427261
     t.integer  "gmap_zoom",       default: 14
   end
 
