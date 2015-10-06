@@ -11,9 +11,9 @@ class AuthenticationsController < ApplicationController
   #   redirect_to authentications_url, :notice => "Successfully destroyed authentication."
   # end
 
-  def home
-
-  end
+  # def home
+  #
+  # end
 
   def failure
     flash[:alert] = 'Sorry. Something wrong happened. We are working on that problem now.'
